@@ -54,6 +54,20 @@ class Encoding extends Object
      */
     protected $mapping;
 
+    // prevent crash with this line in Font.php:
+    //
+    //     $details['Encoding'] = ($this->has('Encoding') ? (string)$this->get('Encoding') : 'Ansi');
+    //
+    public function __toString() {
+        if ($this->getContent()) {
+            return $this->getContent();
+        }
+        if ($this->has('BaseEncoding')) {
+            return $this->get('BaseEncoding')->getContent();
+        }
+        return '';
+    }
+
     /**
      *
      */
